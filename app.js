@@ -17,7 +17,12 @@ class Item {
     };
     this.attributes = {
         ObjectID : value._id,
-        name : value.name
+        name : value.name,
+        object_type : value.object_type,
+        type : value.type,
+        availability : value.availability,
+        price : value.price,
+        stars : value.stars
     };
   }
 }
@@ -28,7 +33,7 @@ function initialize(
     successCallback,
     failureCallback
 ) {
-    MongoClient.connect(dbConnectionUrl, function(err, dbInstance) {
+    MongoClient.connect(dbConnectionUrl, {useUnifiedTopology: true}, function(err, dbInstance) {
         if (err) {
             console.log(`[MongoDB connection] ERROR: ${err}`);
             failureCallback(err);

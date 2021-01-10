@@ -7,9 +7,9 @@ var layer2 = null;
 const urlAttractions = 'http://localhost:3000/attractions';
 const urlTransport = 'http://localhost:3000/transport';
 
-let onExpresion = "age > 0";
-let falseExpresion = "age < 0";
-let filterExpresion = "age > ";
+let onExpresion = "price > 0";
+let falseExpresion = "price < 0";
+let filterExpresion = "price > ";
 
 var view;
 
@@ -47,8 +47,8 @@ require([
                         alias: "ObjectID",
                         type: "oid"
                     }, {
-                        name: "age",
-                        alias: "age",
+                        name: "price",
+                        alias: "price",
                         type: "integer"
                     }],
                     objectIdField: "ObjectID"
@@ -94,7 +94,7 @@ require([
             }
         })
 
-        $("#age").on("change paste keyup", function() {
+        $("#price").on("change paste keyup", function() {
             let number = 0;
             if ($(this).val() !== "") {
                 number = $(this).val();
@@ -102,36 +102,31 @@ require([
 
             let expresion = filterExpresion + number;
 
-            if ($('#rest').prop('checked') === true) {
-            	filterLayer(expresion, layer);
-            }
+            filterLayer(expresion, layer);
 
-            if ($('#obj').prop('checked') === true) {
-            	filterLayer(expresion, layer2);
-            }
+            // if ($('#rest').prop('checked') === true) {
+            // 	filterLayer(expresion, layer);
+            // }
+            
             updateTable(transport, number, "transport");
             updateTable(attractions, number, "attractions");
         });
 
-        $('#rest').change(function() {
-        	filterSwitch(layer, $(this).prop('checked'));
-        });
-
-        $('#obj').change(function() {
-        	filterSwitch(layer2, $(this).prop('checked'));
-        });
+        // $('#obj').change(function() {
+        // 	filterSwitch(layer2, $(this).prop('checked'));
+        // });
 
     });
 
 $(function() {
-    $('#rest-list').change(function() {
+    $('#transport-list').change(function() {
         var isChecked = $(this).prop('checked');
         var transport = document.getElementById('transport');
         var titleTransport = document.getElementById('title-transport');
         transport.style.display = isChecked ? 'table' : 'none';
         titleTransport.style.display = isChecked ? 'table' : 'none';
     })
-    $('#obj-list').change(function() {
+    $('#attractions-list').change(function() {
         var isChecked = $(this).prop('checked');
         var attractions = document.getElementById('attractions');
         var titleAtractions = document.getElementById('title-attractions');
@@ -141,18 +136,21 @@ $(function() {
 
 })
 
-function updateTable(items, inputAge, type) {
+function updateTable(items, price, type) {
     let tr = '';
     let result = [];
 
-	if (inputAge !== undefined) {
-		result = items.filter(value => value.attributes.age > inputAge);
+	if (price !== undefined && type != "transport") {
+		result = items.filter(value => value.attributes.price > price);
 	} else {
 		result = items;
 	}
 	
 	result.forEach(function(value, index) {
-    	tr += `<tr><th scope="row">${index}</th><td>${value.attributes.ObjectID}</td><td>${value.attributes.name}</td><td>${value.attributes.age}</td><td>${value.attributes.cost} $</td></tr>`;
+        if (type == "transport")
+            tr += `<tr><th scope="row">${index}</th><td>${value.attributes.ObjectID}</td><td>${value.attributes.type}</td><td>${value.attributes.availability}</td></tr>`;
+        else if (type == "attractions")
+            tr += `<tr><th scope="row">${index}</th><td>${value.attributes.ObjectID}</td><td>${value.attributes.price}</td><td>${value.attributes.stars}</td></tr>`;
     });
     
     if (type === "transport") {

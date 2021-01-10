@@ -18,50 +18,49 @@
     <div id="viewDiv"></div>
     <div class="bar">
       <label class="checkbox-inline">
-        <input id="rest" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>AFISARE RESTAURANTE</span>
+        <input id="attractions-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>Attractions</span>
       </label>
       <label class="checkbox-inline">
-        <input id="obj" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>AFISARE OBIECTIVE</span>
+        <input id="transport-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>Tranposrt</span>
       </label>
       <label class="checkbox-inline">
-        <input id="rest-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>LISTA RESTAURANTE</span>
-      </label>
-      <label class="checkbox-inline">
-        <input id="obj-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>LISTA OBIECTIVE</span>
-      </label>
-      <label class="checkbox-inline">
-        <input id="age" style="width: 100px; height: 30px" type="number" value="" min="0" max="100"><span>VARSTA</span>
+        <input id="price" style="width: 100px; height: 30px" type="number" value="" min="0" max="100"><span>Price</span>
       </label>
     </div>
 
-    <h3 id="title-transport">LISTA CU RESTAURANTE</h3>
-    <table class="table table-hover table-striped table-bordered" id="transport" style="display: none">
-      <thead class="thead-inverse">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">id</th>
- 	      <th scope="col">name</th>
-          <th scope="col">age</th>
-          <th scope="col">cost</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    
 
-    <h3 id="title-attractions">LISTA CU OBIECTIVE TURISTICE</h3>
+    <h3 id="title-attractions">Attractions</h3>
     <table class="table table-hover table-striped table-bordered" id="attractions" style="display: none">
       <thead class="thead-inverse">
         <tr>
           <th scope="col">#</th>
-          <th scope="col">id</th>
           <th scope="col">name</th>
-          <th scope="col">age</th>
-          <th scope="col">cost</th>
+          <th scope="col">price</th>
+          <th scope="col">stars</th>
         </tr>
       </thead>
       <tbody>
       </tbody>
     </table>
+
+
+
+    <h3 id="title-transport">Transport</h3>
+    <table class="table table-hover table-striped table-bordered" id="transport" style="display: none">
+      <thead class="thead-inverse">
+        <tr>
+          <th scope="col">#</th>
+           <th scope="col">name</th>
+           <th scope="col">type</th>
+           <th scope="col">availability</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+
+
   </body>
 </html>
