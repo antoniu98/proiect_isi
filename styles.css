@@ -1,0 +1,39 @@
+#viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 90%;
+      width: 100%;
+}
+    
+label {
+	padding: 15px;
+	border: black 1px solid;
+	border-radius: 10px;
+	background: rgba(60,60,60,0.2);
+	display: block;
+}
+
+.bar {
+	background: rgba(0,0,0,0.06);
+	border: green 1px solid;
+    display: flex;
+    height: 10%;
+  	align-items: center;
+  justify-content: space-around;
+}
+
+h3 {
+	width: 100%;
+	text-align: center;
+	display: none;
+	font-weight: bold;
+}
+
+span {
+	font-weight: bold;
+}
+
+.thead-inverse th {
+            color: #fff;
+            background-color: #373a3c;
+        }

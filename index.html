@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta name="description" content="DevLab: Configure a popup">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Vancouver, BC</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://js.arcgis.com/4.17/"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+    <div class="bar">
+      <label class="checkbox-inline">
+        <input id="rest" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>AFISARE RESTAURANTE</span>
+      </label>
+      <label class="checkbox-inline">
+        <input id="obj" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>AFISARE OBIECTIVE</span>
+      </label>
+      <label class="checkbox-inline">
+        <input id="rest-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>LISTA RESTAURANTE</span>
+      </label>
+      <label class="checkbox-inline">
+        <input id="obj-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>LISTA OBIECTIVE</span>
+      </label>
+      <label class="checkbox-inline">
+        <input id="age" style="width: 100px; height: 30px" type="number" value="" min="0" max="100"><span>VARSTA</span>
+      </label>
+    </div>
+
+    <h3 id="title-transport">LISTA CU RESTAURANTE</h3>
+    <table class="table table-hover table-striped table-bordered" id="transport" style="display: none">
+      <thead class="thead-inverse">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">id</th>
+ 	      <th scope="col">name</th>
+          <th scope="col">age</th>
+          <th scope="col">cost</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <h3 id="title-attractions">LISTA CU OBIECTIVE TURISTICE</h3>
+    <table class="table table-hover table-striped table-bordered" id="attractions" style="display: none">
+      <thead class="thead-inverse">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">id</th>
+          <th scope="col">name</th>
+          <th scope="col">age</th>
+          <th scope="col">cost</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </body>
+</html>
