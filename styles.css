@@ -1,8 +1,8 @@
 #viewDiv {
       padding: 0;
       margin: 0;
-      height: 90%;
-      width: 100%;
+      height: 94%;
+	  width: 100%;
 }
     
 label {
@@ -36,4 +36,4 @@ span {
 .thead-inverse th {
             color: #fff;
             background-color: #373a3c;
-        }
+	}

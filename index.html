@@ -3,33 +3,100 @@
     <meta name="description" content="DevLab: Configure a popup">
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    
     <title>Vancouver, BC</title>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="https://js.arcgis.com/4.17/"></script>
+
     <script type="text/javascript" src="scripts.js"></script>
   </head>
   <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Vancouver, B.C.</a>
+      <button class="navbar-toggler" 
+              type="button" 
+              data-toggle="collapse" 
+              data-target="#navbarSupportedContent" 
+              aria-controls="navbarSupportedContent" 
+              aria-expanded="false" 
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a id="attractionsFilter" class="dropdown-item" href="#">Show only attractions</a>
+              <a id="transportFilter" class="dropdown-item" href="#">Show only public transport</a>
+              <div class="dropdown-divider"></div>
+              <a id="noFilter" class="dropdown-item" href="#">Show both</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Contributors
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item disabled" href="#">Antoniu Neacsu</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item disabled" href="#">Andrei Sfetcu</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item disabled" href="#">Ada Ionita</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item disabled" href="#">Ovidiu Tacu</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Developed using ArcGIS 4.17</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
     <div id="viewDiv"></div>
-    <div class="bar">
+
+    <!-- Sidebar -->
+    <!-- <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+      <button onclick="w3_close()" class="w3-bar-item w3-large">&times;</button>
+      <label class="w3-bar-item w3-button">
+        <input id="rest" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>Show Transport</span>
+      </label>
       <label class="checkbox-inline">
-        <input id="attractions-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>Attractions</span>
+        <input id="obj" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked><span>Show Attractions</span>
       </label>
       <label class="checkbox-inline">
         <input id="transport-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>Tranposrt</span>
       </label>
       <label class="checkbox-inline">
+        <input id="attractions-list" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger"><span>Attractions</span>
+      </label>
+      <label class="checkbox-inline">
         <input id="price" style="width: 100px; height: 30px" type="number" value="" min="0" max="100"><span>Price</span>
       </label>
-    </div>
-
+    </div> -->
     
-
     <h3 id="title-attractions">Attractions</h3>
     <table class="table table-hover table-striped table-bordered" id="attractions" style="display: none">
       <thead class="thead-inverse">
@@ -44,8 +111,6 @@
       </tbody>
     </table>
 
-
-
     <h3 id="title-transport">Transport</h3>
     <table class="table table-hover table-striped table-bordered" id="transport" style="display: none">
       <thead class="thead-inverse">
@@ -59,8 +124,6 @@
       <tbody>
       </tbody>
     </table>
-
-
 
   </body>
 </html>

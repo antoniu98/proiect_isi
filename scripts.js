@@ -11,6 +11,9 @@ let onExpresion = "price > 0";
 let falseExpresion = "price < 0";
 let filterExpresion = "price > ";
 
+let attractionsFilter = "object_type = 'attraction'"
+let transportFilter = "object_type = 'transport'"
+
 var view;
 
 require([
@@ -50,6 +53,10 @@ require([
                         name: "price",
                         alias: "price",
                         type: "integer"
+                    }, {
+                        name: "object_type",
+                        alias: "object_type",
+                        type: "string"
                     }],
                     objectIdField: "ObjectID"
                 });
@@ -82,6 +89,10 @@ require([
                         name: "cost",
                         alias: "cost",
                         type: "integer"
+                    }, {
+                        name: "object_type",
+                        alias: "object_type",
+                        type: "string"
                     }],
                     objectIdField: "ObjectID"
                 });
@@ -102,19 +113,31 @@ require([
 
             let expresion = filterExpresion + number;
 
-            filterLayer(expresion, layer);
+            if ($('#transportFilter').prop('checked') === true) {
+            	filterLayer(expresion, layer);
+            }
 
-            // if ($('#rest').prop('checked') === true) {
-            // 	filterLayer(expresion, layer);
-            // }
-            
+            if ($('#attractionsFilter').prop('checked') === true) {
+            	filterLayer(expresion, layer2);
+            }
             updateTable(transport, number, "transport");
             updateTable(attractions, number, "attractions");
         });
 
-        // $('#obj').change(function() {
-        // 	filterSwitch(layer2, $(this).prop('checked'));
-        // });
+        $('#transportFilter').click(function() {
+            console.log("transportFilter");
+        	filterSwitch(layer, layer2, "#transportFilter");
+        });
+
+        $('#attractionsFilter').click(function() {
+            console.log("attractionsFilter");
+        	filterSwitch(layer, layer2, "#attractionsFilter");
+        });
+
+        $('#noFilter').click(function() {
+            console.log("noFilter");
+        	filterSwitch(layer, layer2, "#noFilter");
+        });
 
     });
 
@@ -147,7 +170,7 @@ function updateTable(items, price, type) {
 	}
 	
 	result.forEach(function(value, index) {
-        if (type == "transport")
+    	if (type == "transport")
             tr += `<tr><th scope="row">${index}</th><td>${value.attributes.ObjectID}</td><td>${value.attributes.type}</td><td>${value.attributes.availability}</td></tr>`;
         else if (type == "attractions")
             tr += `<tr><th scope="row">${index}</th><td>${value.attributes.ObjectID}</td><td>${value.attributes.price}</td><td>${value.attributes.stars}</td></tr>`;
@@ -168,10 +191,15 @@ function filterLayer(expresion, layer) {
     });
 }
 
-function filterSwitch(layer, option) {
-    if (option === false) {
-       	filterLayer(falseExpresion, layer)
+function filterSwitch(layer1, layer2, filter) {
+    if (filter == "#attractionsFilter") {
+        filterLayer(attractionsFilter, layer);
+        filterLayer(attractionsFilter, layer2);
+    } else if (filter == "#transportFilter") {
+        filterLayer(transportFilter, layer);
+        filterLayer(transportFilter, layer2);
     } else {
-     	filterLayer(onExpresion, layer);
+        filterLayer(attractionsFilter, layer);
+        filterLayer(transportFilter, layer2);
     }
 }

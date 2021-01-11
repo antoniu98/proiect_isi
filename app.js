@@ -74,8 +74,6 @@ app.get('/transport', (req, res) => {
             	throw err;
             let items = [];
             result.forEach((value, index) => {
-                console.log(value.x);
-                console.log(value["x"]);
                 value._id = index + 1;
                 items.push(new Item(value, [19, 100, 140]));
             });
