@@ -1,0 +1,23 @@
+{
+  "name": "proiect_isi",
+  "version": "1.0.0",
+  "description": "proiect_isi_2021",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antoniu98/proiect_isi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antoniu98/proiect_isi/issues"
+  },
+  "homepage": "https://github.com/antoniu98/proiect_isi#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.3"
+  }
+}
