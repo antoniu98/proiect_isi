@@ -19,12 +19,20 @@ var view;
 require([
         "esri/Map",
         "esri/views/MapView",
-        "esri/layers/FeatureLayer"
+        "esri/layers/FeatureLayer",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/Legend",
+        "esri/Graphic",
+        "esri/widgets/Track",
     ],
     function(
         Map,
         MapView,
-        FeatureLayer
+        FeatureLayer,
+        BasemapGallery,
+        Legend,
+        Graphic,
+        Track
     ) {
 
         var map = new Map({
@@ -38,6 +46,65 @@ require([
             zoom: 12
         });
 
+        var basemapGallery = new BasemapGallery({
+            view: view,
+            source: {
+              portal: {
+                url: "http://www.arcgis.com",
+                useVectorBasemaps: true
+              },
+            } 
+        });
+
+        view.ui.add(basemapGallery, "bottom-left");
+
+        var attractionRenderer = {
+            type: "simple",
+            symbol: {
+              type: "picture-marker",
+              url: "https://cdn2.iconfinder.com/data/icons/dark-action-bar-2/96/camera-512.png",
+              width: "25px",
+              height: "25px"
+            }
+        }
+        
+        var popupAttraction = {
+            "title": "<b>{name}</b>",
+            "content": "<b>Price:</b> {price} RON/person<br><b>Stars:</b> {stars}<br><b>Information:</b> {information}"
+        }
+
+        var transportRenderer = {
+            type: "simple",
+            symbol: {
+              type: "picture-marker",
+              url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Pictograms-nps-misc-metro_station-2.svg/1024px-Pictograms-nps-misc-metro_station-2.svg.png",
+              width: "18px",
+              height: "18px"
+            }
+        }
+        
+        var popupTransport = {
+            "title": "<b>{name}</b>",
+            "content": "<b>Price:</b> {cost} RON/person<br><b>Type:</b> {type}<br><b>Availability:</b> {availability}<br><b>Information:</b> {information}"
+        }
+
+        var track = new Track({
+            view: view,
+            graphic: new Graphic({
+              symbol: {
+                type: "simple-marker",
+                size: "12px",
+                color: "green",
+                outline: {
+                  color: "#efefef",
+                  width: "1.5px"
+                }
+              }
+            }),
+            useHeadingEnabled: false
+          });
+        view.ui.add(track, "top-left");
+
         $.ajax({
             url: urlAttractions,
             type: 'GET',
@@ -50,15 +117,25 @@ require([
                         alias: "ObjectID",
                         type: "oid"
                     }, {
+                        name: "name",
+                        alias: "name",
+                        type: "string"
+                    }, {
                         name: "price",
                         alias: "price",
+                        type: "integer"
+                    }, {
+                        name: "stars",
+                        alias: "stars",
                         type: "integer"
                     }, {
                         name: "object_type",
                         alias: "object_type",
                         type: "string"
                     }],
-                    objectIdField: "ObjectID"
+                    objectIdField: "ObjectID",
+                    renderer: attractionRenderer,
+                    popupTemplate: popupAttraction
                 });
                 layer = aux;
                 attractions = result;
@@ -81,20 +158,26 @@ require([
                         alias: "ObjectID",
                         type: "oid"
                     }, {
-                        name: "age",
-                        alias: "age",
-                        type: "integer"
+                        name: "name",
+                        alias: "name",
+                        type: "string"
                     },
 					{
-                        name: "cost",
-                        alias: "cost",
-                        type: "integer"
+                        name: "availability",
+                        alias: "availability",
+                        type: "string"
+                    }, {
+                        name: "type",
+                        alias: "type",
+                        type: "string"
                     }, {
                         name: "object_type",
                         alias: "object_type",
                         type: "string"
                     }],
-                    objectIdField: "ObjectID"
+                    objectIdField: "ObjectID",
+                    renderer: transportRenderer,
+                    popupTemplate: popupTransport
                 });
                 layer2 = aux;
                 transport = result;
@@ -139,6 +222,10 @@ require([
         	filterSwitch(layer, layer2, "#noFilter");
         });
 
+        $('#goToCenter').click(function() {
+            console.log("goToCenter");
+        	goToCenter();
+        });
     });
 
 $(function() {
@@ -189,6 +276,11 @@ function filterLayer(expresion, layer) {
         	where: expresion
         };
     });
+}
+
+function goToCenter() {
+    view.center = [-123.12, 49.28];
+    view.zoom = 12;
 }
 
 function filterSwitch(layer1, layer2, filter) {
