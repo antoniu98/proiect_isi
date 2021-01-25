@@ -4,6 +4,9 @@ let attractions = [];
 var layer = null;
 var layer2 = null;
 
+var transportLayer;
+var attractionsLayer;
+
 const urlAttractions = 'http://localhost:3000/attractions';
 const urlTransport = 'http://localhost:3000/transport';
 
@@ -24,6 +27,11 @@ require([
         "esri/widgets/Legend",
         "esri/Graphic",
         "esri/widgets/Track",
+        "esri/widgets/Expand",
+        "esri/widgets/Search",
+        "esri/tasks/RouteTask",
+      "esri/tasks/support/RouteParameters",
+      "esri/tasks/support/FeatureSet"
     ],
     function(
         Map,
@@ -32,7 +40,10 @@ require([
         BasemapGallery,
         Legend,
         Graphic,
-        Track
+        Track,
+        Expand,
+        Search,
+        RouteTask, RouteParameters, FeatureSet
     ) {
 
         var map = new Map({
@@ -70,7 +81,7 @@ require([
         
         var popupAttraction = {
             "title": "<b>{name}</b>",
-            "content": "<b>Price:</b> {price} RON/person<br><b>Stars:</b> {stars}<br><b>Information:</b> {information}"
+            "content": "<b>Price:</b> {price} RON/person<br><b>Stars:</b> {stars}<br><b>"
         }
 
         var transportRenderer = {
@@ -85,7 +96,7 @@ require([
         
         var popupTransport = {
             "title": "<b>{name}</b>",
-            "content": "<b>Price:</b> {cost} RON/person<br><b>Type:</b> {type}<br><b>Availability:</b> {availability}<br><b>Information:</b> {information}"
+            "content": "<b>Price:</b> {price} RON/person<br><b>Type:</b> {type}<br><b>Availability:</b> {availability}"
         }
 
         var track = new Track({
@@ -105,88 +116,128 @@ require([
           });
         view.ui.add(track, "top-left");
 
-        $.ajax({
-            url: urlAttractions,
-            type: 'GET',
-            success: function(result) {
-				updateTable(result, undefined, "attractions");
-                var aux = new FeatureLayer({
-                    source: result,
-                    fields: [{
-                        name: "ObjectID",
-                        alias: "ObjectID",
-                        type: "oid"
-                    }, {
-                        name: "name",
-                        alias: "name",
-                        type: "string"
-                    }, {
-                        name: "price",
-                        alias: "price",
-                        type: "integer"
-                    }, {
-                        name: "stars",
-                        alias: "stars",
-                        type: "integer"
-                    }, {
-                        name: "object_type",
-                        alias: "object_type",
-                        type: "string"
-                    }],
-                    objectIdField: "ObjectID",
-                    renderer: attractionRenderer,
-                    popupTemplate: popupAttraction
-                });
-                layer = aux;
-                attractions = result;
-                map.add(aux);
-            },
-            error: function(error) {
-                console.log('Error ${error}');
-            }
-        })
 
-        $.ajax({
-            url: urlTransport,
-            type: 'GET',
-            success: function(result) {
-				updateTable(result, undefined, "transport");
-                var aux = new FeatureLayer({
-                    source: result,
-                    fields: [{
-                        name: "ObjectID",
-                        alias: "ObjectID",
-                        type: "oid"
-                    }, {
-                        name: "name",
-                        alias: "name",
-                        type: "string"
-                    },
-					{
-                        name: "availability",
-                        alias: "availability",
-                        type: "string"
-                    }, {
-                        name: "type",
-                        alias: "type",
-                        type: "string"
-                    }, {
-                        name: "object_type",
-                        alias: "object_type",
-                        type: "string"
-                    }],
-                    objectIdField: "ObjectID",
-                    renderer: transportRenderer,
-                    popupTemplate: popupTransport
+        $.when(
+            $.ajax({
+                url: urlAttractions,
+                type: 'GET',
+                success: function(result) {
+                    console.log(result);
+                    updateTable(result, undefined, "attractions");
+                    var aux = new FeatureLayer({
+                        source: result,
+                        fields: [{
+                            name: "ObjectID",
+                            alias: "ObjectID",
+                            type: "oid"
+                        }, {
+                            name: "name",
+                            alias: "name",
+                            type: "string"
+                        }, {
+                            name: "price",
+                            alias: "price",
+                            type: "integer"
+                        }, {
+                            name: "stars",
+                            alias: "stars",
+                            type: "integer"
+                        }, {
+                            name: "object_type",
+                            alias: "object_type",
+                            type: "string"
+                        }],
+                        title: "Attractions",
+                        objectIdField: "ObjectID",
+                        renderer: attractionRenderer,
+                        popupTemplate: popupAttraction
+                    });
+                    attractionsLayer = aux;
+                    layer = aux;
+                    attractions = result;
+                    map.add(aux);
+                },
+                error: function(error) {
+                    console.log('Error ${error}');
+                }
+            }),
+            $.ajax({
+                url: urlTransport,
+                type: 'GET',
+                success: function(result) {
+                    updateTable(result, undefined, "transport");
+                    var aux = new FeatureLayer({
+                        source: result,
+                        fields: [{
+                            name: "ObjectID",
+                            alias: "ObjectID",
+                            type: "oid"
+                        }, {
+                            name: "name",
+                            alias: "name",
+                            type: "string"
+                        },
+                        {
+                            name: "availability",
+                            alias: "availability",
+                            type: "string"
+                        }, {
+                            name: "type",
+                            alias: "type",
+                            type: "string"
+                        }, {
+                            name: "object_type",
+                            alias: "object_type",
+                            type: "string"
+                        }],
+                        title: "Transport",
+                        objectIdField: "ObjectID",
+                        renderer: transportRenderer,
+                        popupTemplate: popupTransport
+                    });
+                    transportLayer = aux;
+                    layer2 = aux;
+                    transport = result;
+                    map.add(aux);
+                },
+                error: function(error) {
+                    console.log('Error ${error}');
+                }
+            })
+        ).then( function(data) {
+            /* === Legend === */
+            var legend = new Legend({    
+                view: view,
+                layerInfos: [
+                {
+                    layer: transportLayer,
+                    title: "Transport"
+                },
+                {
+                    layer: attractionsLayer,
+                    title: "Attractions"
+                }
+                ]
+            });
+
+                const legendElement = new Expand({
+                    expandIconClass: "esri-icon-legend",
+                    expandTooltip: "Legend",
+                    view: view,
+                    content: legend,
+                    expanded: false
                 });
-                layer2 = aux;
-                transport = result;
-                map.add(aux);
-            },
-            error: function(error) {
-                console.log('Error ${error}');
-            }
-        })
+                view.ui.add(legendElement, "top-right");
+
+                console.log("Transport layer : ");
+                console.log(legend.layerInfos[0]);
+        });
+     
+        $("[value=Legend]").click(function() {
+            $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(0).innerHTML="Transport";
+            $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(1).innerHTML="Attractions";   
+        });
+            
 
         $("#price").on("change paste keyup", function() {
             let number = 0;
@@ -226,7 +277,71 @@ require([
             console.log("goToCenter");
         	goToCenter();
         });
+
+
+        // SEARCH WIDGET
+        var searchWidget = new Search({
+            view: view
+          });
+        view.ui.add(searchWidget, {
+            position: "top-right"
+          });
+
+
+        // Route and direction:
+        var routeTask = new RouteTask({
+            url: "https://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World"
+         });
+   
+         view.on("click", function(event){
+           if (view.graphics.length === 0) {
+             addGraphic("start", event.mapPoint);
+           } else if (view.graphics.length === 1) {
+             addGraphic("finish", event.mapPoint);
+             // Call the route service
+             getRoute();
+           } else {
+             view.graphics.removeAll();
+             addGraphic("start",event.mapPoint);
+           }
+         });
+         
+         function addGraphic(type, point) {
+           var graphic = new Graphic({
+             symbol: {
+               type: "simple-marker",
+               color: (type === "start") ? "white" : "black",
+               size: "8px"
+             },
+             geometry: point
+           });
+           view.graphics.add(graphic);
+         }
+       
+         function getRoute() {
+           // Setup the route parameters
+           var routeParams = new RouteParameters({
+             stops: new FeatureSet({
+               features: view.graphics.toArray()
+             }),
+             returnDirections: true
+           });
+           // Get the route
+           routeTask.solve(routeParams).then(function(data) {
+             data.routeResults.forEach(function(result) {
+               result.route.symbol = {
+                 type: "simple-line",
+                 color: [5, 150, 255],
+                 width: 3
+               };
+               view.graphics.add(result.route); 
+             });
+             
+           });
+         }
     });
+
+    
 
 $(function() {
     $('#transport-list').change(function() {
@@ -295,3 +410,5 @@ function filterSwitch(layer1, layer2, filter) {
         filterLayer(transportFilter, layer2);
     }
 }
+
+
