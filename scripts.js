@@ -231,12 +231,16 @@ require([
 
                 console.log("Transport layer : ");
                 console.log(legend.layerInfos[0]);
+        })
+        .then( () => {
+           setTimeout(() => {
+            $(".esri-collapse__icon.esri-icon-legend").click(function() {
+                $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(0).innerHTML="Transport";
+                $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(1).innerHTML="Attractions";
+            }); 
+           }, 300);
         });
-     
-        $("[value=Legend]").click(function() {
-            $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(0).innerHTML="Transport";
-            $(".esri-legend__layer-cell.esri-legend__layer-cell--info").get(1).innerHTML="Attractions";   
-        });
+        
             
 
         $("#price").on("change paste keyup", function() {
