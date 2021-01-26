@@ -13,6 +13,8 @@ const urlTransport = 'http://localhost:3000/transport';
 let onExpresion = "price > 0";
 let falseExpresion = "price < 0";
 let filterExpresion = "price > ";
+let openFilter = "availability = 'open'";
+let noFilter = "1 = 1";
 
 let attractionsFilter = "object_type = 'attraction'"
 let transportFilter = "object_type = 'transport'"
@@ -96,7 +98,7 @@ require([
         
         var popupTransport = {
             "title": "<b>{name}</b>",
-            "content": "<b>Price:</b> {price} RON/person<br><b>Type:</b> {type}<br><b>Availability:</b> {availability}"
+            "content": "Type:</b> {type}<br><b>Availability:</b> {availability}"
         }
 
         var track = new Track({
@@ -145,6 +147,10 @@ require([
                         }, {
                             name: "object_type",
                             alias: "object_type",
+                            type: "string"
+                        }, {
+                            name: "availability",
+                            alias: "availability",
                             type: "string"
                         }],
                         title: "Attractions",
@@ -274,12 +280,19 @@ require([
 
         $('#noFilter').click(function() {
             console.log("noFilter");
-        	filterSwitch(layer, layer2, "#noFilter");
+            filterSwitch(layer, layer2, "#noFilter");
         });
 
         $('#goToCenter').click(function() {
             console.log("goToCenter");
         	goToCenter();
+        });
+
+        $('#openFilter').click(function() {
+            console.log("openFilter");
+            
+            filterLayer(openFilter, transportLayer);
+            filterLayer(openFilter, attractionsLayer);
         });
 
 
